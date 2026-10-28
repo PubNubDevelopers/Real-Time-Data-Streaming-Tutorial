@@ -7,6 +7,7 @@
 This repository accompanies the [real-time data streaming tutorial](https://www.pubnub.com/tutorials/real-time-data-streaming/). It has two parts:
 
 - `real-time-pubnub-sdk/`: a Node.js app that reads Wikimedia's [recent changes stream](https://stream.wikimedia.org/?doc#/streams/get_v2_stream_recentchange) and [publishes](https://www.pubnub.com/docs/pub-sub/publish/overview) every change to PubNub with the [JavaScript SDK](https://www.pubnub.com/docs/sdks/javascript).
+- `demo-changes/`: the `addFormattedMessageWikipedia` function to paste into the [data streaming demo](https://github.com/PubNubDevelopers/Real-Time-Data-Streaming-Demo), so it shows the events this app publishes.
 - `real-time-pubnub-stream/`: a Python 3 script that sends thousands of messages over one connection with HTTP pipelining, and a URL to watch them with HTTP streaming.
 
 ![Screenshot](https://raw.githubusercontent.com/PubNubDevelopers/Real-Time-Data-Streaming-Tutorial/main/media/stream1.gif)
