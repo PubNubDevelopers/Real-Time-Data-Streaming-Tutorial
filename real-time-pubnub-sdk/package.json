@@ -8,7 +8,7 @@
     "start": "node index.js"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=22.12"
   },
   "license": "ISC",
   "dependencies": {

@@ -16,7 +16,7 @@ Tested with the PubNub JavaScript SDK 13.1.3, Node.js 24 and Python 3.15 (Octobe
 
 ## Running
 
-You need [Node.js](https://nodejs.org/en/download) 22 or later, [Python 3](https://www.python.org/downloads/) and your own PubNub publish and subscribe keys from the [Admin Portal](https://admin.pubnub.com/).
+You need [Node.js](https://nodejs.org/en/download) 22.12 or later, [Python 3](https://www.python.org/downloads/) and your own PubNub publish and subscribe keys from the [Admin Portal](https://admin.pubnub.com/).
 
 ```
 git clone https://github.com/PubNubDevelopers/Real-Time-Data-Streaming-Tutorial.git

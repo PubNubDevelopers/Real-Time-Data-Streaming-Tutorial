@@ -11,10 +11,10 @@ const pubnub = new PubNub({
 })
 
 eventSource.onmessage = async event => {
-  const data = JSON.parse(event.data)
-  // To publish changes from one wiki only, wrap the rest in: if (data.server_name === 'en.wikipedia.org') { ... }
-  console.log(data.server_name, data.type, data.title)
   try {
+    const data = JSON.parse(event.data)
+    // To publish changes from one wiki only, wrap the rest in: if (data.server_name === 'en.wikipedia.org') { ... }
+    console.log(data.server_name, data.type, data.title)
     await pubnub.publish({
       channel: 'pubnub-wikipedia',
       message: data
