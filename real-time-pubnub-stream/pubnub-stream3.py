@@ -16,6 +16,7 @@ USER_ID = 'stream-tutorial'
 
 HOST = 'ps.pndsn.com'
 PORT = 443
+BATCH = 1000  # Publish requests in flight on the connection at once
 
 numID = random.randrange(5000, 10000)
 print('creating', numID, 'UUIDs')
@@ -28,11 +29,11 @@ print('We will send a random quantity of messages every 10 seconds, each contain
 
 context = ssl.create_default_context()
 
-def handleSocketRead(s, numMessages):
+def readReplies(s, numReplies):
     # Each accepted publish returns [1,"Sent","<timetoken>"]. Count them until all have arrived.
     accepted = 0
     tail = b''
-    while accepted < numMessages:
+    while accepted < numReplies:
         try:
             msg = s.recv(65536)
         except socket.timeout:
@@ -46,7 +47,12 @@ def handleSocketRead(s, numMessages):
         chunk = tail + msg
         accepted += chunk.count(b'[1,"Sent"')
         tail = chunk[-8:]  # A reply split across two reads is counted once it's complete.
-    print('PubNub accepted', accepted, 'of', numMessages, 'messages')
+    return accepted
+
+def request():
+    payload = quote('"' + str(id[random.randrange(0, numID-1)]) + '"')
+    path = '/publish/' + PUBLISH_KEY + '/' + SUBSCRIBE_KEY + '/0/' + CHANNEL + '/0/' + payload + '?uuid=' + USER_ID
+    return 'GET ' + path + ' HTTP/1.1\r\nHost: ' + HOST + '\r\n\r\n'
 
 def send():
     time.sleep(10)
@@ -56,14 +62,15 @@ def send():
     numMessages = random.randrange(math.floor(0.5*numID), 2*numID)
     print('Sending ' + str(numMessages) + ' messages.')
     time_start = time.time()
-    tmr = threading.Thread(target=handleSocketRead, args=[s, numMessages])
-    tmr.start()
-    for message in range(0, numMessages):
-        payload = quote('"' + str(id[random.randrange(0, numID-1)]) + '"')
-        path = '/publish/' + PUBLISH_KEY + '/' + SUBSCRIBE_KEY + '/0/' + CHANNEL + '/0/' + payload + '?uuid=' + USER_ID
-        s.sendall(('GET ' + path + ' HTTP/1.1\r\nHost: ' + HOST + '\r\n\r\n').encode())
+    accepted = 0
+    # Pipelining: write BATCH requests in one go without waiting, then read their replies.
+    # One thread does both, because a TLS socket can't be read and written from two threads at once.
+    for start in range(0, numMessages, BATCH):
+        count = min(BATCH, numMessages - start)
+        s.sendall(''.join(request() for _ in range(count)).encode())
+        accepted += readReplies(s, count)
     print('It took', str(time.time()-time_start), 'seconds to send', numMessages, 'messages')
-    tmr.join()
+    print('PubNub accepted', accepted, 'of', numMessages, 'messages')
     s.close()
 
 send()
