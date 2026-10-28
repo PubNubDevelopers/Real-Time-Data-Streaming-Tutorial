@@ -1,15 +1,18 @@
 {
   "name": "real-time-pubnub-sdk",
   "version": "1.0.0",
-  "description": "",
+  "description": "Publishes Wikimedia's recent changes stream to PubNub",
   "main": "index.js",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
-  "author": "",
+  "engines": {
+    "node": ">=22.12"
+  },
   "license": "ISC",
   "dependencies": {
-    "eventsource": "^2.0.2",
-    "pubnub": "^7.2.0"
+    "eventsource": "5.1.3",
+    "pubnub": "13.1.3"
   }
 }
