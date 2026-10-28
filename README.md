@@ -1,47 +1,50 @@
 # Tutorial: Real-Time Data Streaming with PubNub
 
-**PubNub makes it easy to connect and consume huge amounts of real-time streaming data, and deliver it to any number of subscribers.** These "firehoses of data" could be weather reports, business metrics, stock quotes, tweets - really any source of data that is constantly changing and emitting updates. PubNub’s Data Stream Network handles keeping both publishers and subscribers securely connected and ensuring that every piece of data is generally available in real time, so scale (or the amount of data you’re sending) is never an issue.
+**PubNub makes it easy to connect and consume large amounts of real-time streaming data, and deliver it to any number of subscribers.** These "firehoses of data" could be weather reports, business metrics, stock quotes or sensor readings: any source of data that is constantly changing and emitting updates.
 
 ## Tutorial
 
-This repository accompanies the [Real-time data streaming tutorial](https://pubnub.com/tutorials/real-time-data-streaming/)
+This repository accompanies the [real-time data streaming tutorial](https://www.pubnub.com/tutorials/real-time-data-streaming/). It has two parts:
+
+- `real-time-pubnub-sdk/`: a Node.js app that reads Wikimedia's [recent changes stream](https://stream.wikimedia.org/?doc#/streams/get_v2_stream_recentchange) and [publishes](https://www.pubnub.com/docs/pub-sub/publish/overview) every change to PubNub with the [JavaScript SDK](https://www.pubnub.com/docs/sdks/javascript).
+- `real-time-pubnub-stream/`: a Python 3 script that sends thousands of messages over one connection with HTTP pipelining, and a URL to watch them with HTTP streaming.
 
 ![Screenshot](https://raw.githubusercontent.com/PubNubDevelopers/Real-Time-Data-Streaming-Tutorial/main/media/stream1.gif)
 
-A high quality and extended video of the above animated gif is [available on YouTube](https://www.youtube.com/watch?v=sswM8GqRLFs)
+Tested with the PubNub JavaScript SDK 13.1.3, Node.js 24 and Python 3.15 (October 2026).
 
-## Features
+## Running
 
-- [Publish](https://www.pubnub.com/docs/general/messages/publish) and [Subscribe](https://www.pubnub.com/docs/sdks/dart/api-reference/publish-and-subscribe) real-time messages with the PubNub SDK
-- [Stream](https://gist.github.com/stephenlb/9496723) real-time messages with HTTP Pipelining
-
-## Installing / Getting Started
-
-This repository is not designed to run standalone, please follow the [Real-time data streaming tutorial](https://pubnub.com/tutorials/real-time-data-streaming/) for full context.
-
-
-### Building and Running
-
-- Clone the Github repository
+You need [Node.js](https://nodejs.org/en/download) 22 or later, [Python 3](https://www.python.org/downloads/) and your own PubNub publish and subscribe keys from the [Admin Portal](https://admin.pubnub.com/).
 
 ```
-git clone https://github.com/PubNubDevelopers/Real-Time-Data-Streaming-Demo.git
+git clone https://github.com/PubNubDevelopers/Real-Time-Data-Streaming-Tutorial.git
+cd Real-Time-Data-Streaming-Tutorial
 ```
 
-- Follow the [Real-time data streaming tutorial](https://pubnub.com/tutorials/real-time-data-streaming/)
+Publish Wikimedia changes with the SDK: replace `YOUR_PUBLISH_KEY` and `YOUR_SUBSCRIBE_KEY` in `real-time-pubnub-sdk/index.js`, then:
 
+```
+cd real-time-pubnub-sdk
+npm install
+npm start
+```
+
+Stream with HTTP pipelining: replace the same placeholders in `real-time-pubnub-stream/pubnub-stream3.py`, then:
+
+```
+python3 real-time-pubnub-stream/pubnub-stream3.py
+```
+
+Follow the [tutorial](https://www.pubnub.com/tutorials/real-time-data-streaming/) for how to watch the messages arrive.
 
 ## Contributing
-Please fork the repository if you'd like to contribute. Pull requests are always welcome. 
+
+Please fork the repository if you'd like to contribute. Pull requests are always welcome.
 
 ## Links
 
-Checkout the following links for more information on developing chat solutions with PubNub:
+- Data streaming demo: https://www.pubnub.com/demos/real-time-data-streaming/
+- Data streaming solutions: https://www.pubnub.com/solutions/data-streaming/
+- JavaScript SDK documentation: https://www.pubnub.com/docs/sdks/javascript
 
-- Tour of PubNub features: https://www.pubnub.com/tour/introduction/
-- **Data streaming demo:** https://pubnub.com/demo/real-time-data-streaming/ 
-- Data streaming use cases: https://www.pubnub.com/use-case/data-broadcasting-and-dashboards/
-
-## Other screenshots
-
-![Screenshot](https://raw.githubusercontent.com/PubNubDevelopers/Real-Time-Data-Streaming-Tutorial/main/media/sdk1.png)
